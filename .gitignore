@@ -1,0 +1,25 @@
+# Compiled python modules.
+*.pyc
+
+# Setuptools distribution folder.
+/dist/*
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info/*
+
+# Ignore Jupyter/IPython Notebook Checkpoints
+/Notebooks/.ipynb_checkpoints/*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.*~
+
+# Source Lyx/Tex/BibTex Files
+*.tex
+*.lyx
+*lyx-format*.lyx
+*.*#
+*.bib
+*.*~
