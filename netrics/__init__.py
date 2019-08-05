@@ -16,3 +16,10 @@ from ipt.iv import iv
 
 # Networks functions
 from .dyadic_regression import dyadic_regression
+from .tetrad_logit import tetrad_logit
+from .dyad_jfe_logit import dyad_jfe_logit
+
+from .helpers import generate_dyad_to_tetrads_dict, generate_tetrad_indices, \
+                     organize_data_tetrad_logit, tetrad_logit_score_proj, \
+                     dyad_jfe_select_matrix
+ 

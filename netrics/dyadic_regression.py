@@ -7,7 +7,6 @@ import scipy.optimize
 import scipy.stats
 
 import pandas as pd
-
 import itertools as it
 
 # Import additional functions called by eplm()
@@ -140,7 +139,7 @@ def dyadic_regression(Y, R, regmodel='normal', directed=True, nocons=False, sile
     
     # Compute point estimate of theta
     regmodel_dict = {"normal": normal_dreg, "logit": logit_dreg, "poisson": poisson_dreg}
-    [theta_DR, H, S_ij] = regmodel_dict[regmodel](Y, R, s_wgt=None, nocons=nocons, silent=silent)
+    [theta_DR, H, S_ij] = regmodel_dict[regmodel](Y, R, s_wgt=None, nocons=True, silent=silent)
         
     #-------------------------------------------------------------------#
     #- STEP 3 : COMPUTE VARIANCE-COVARIANCE MATRIX OF COEFFICIENTS     -#
