@@ -125,7 +125,7 @@ def generate_tetrad_indices(N, full_set=False):
          
     # Concatenate indices into an (N choose 4) x 6 matrix
     # The function returns this numpy 2d array as its first output
-    tetrad_to_dyads_indices = np.column_stack((ij, ik, ik, jk, jl, kl))
+    tetrad_to_dyads_indices = np.column_stack((ij, ik, il, jk, jl, kl))
     
     # Form dyad-to-tetrads dictionary if directed to do so
     if full_set:
