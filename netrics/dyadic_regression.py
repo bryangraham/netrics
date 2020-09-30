@@ -99,11 +99,11 @@ def dyadic_regression(Y, R, regmodel='normal', directed=True, nocons=False, sile
     #-------------------------------------------------------------------#
     
     # Check to make sure Y and R are pandas objects with multi-indices
-    if not isinstance(Y.index, pd.core.index.MultiIndex):
+    if not isinstance(Y.index, pd.MultiIndex):
         print("Y is not a Pandas Series with an (i,j) multi-index")
         return [None, None, None]
     
-    if not isinstance(R.index, pd.core.index.MultiIndex):
+    if not isinstance(R.index, pd.MultiIndex):
         print("R is not a Pandas DataFrame with an (i,j) multi-index")
         return [None, None, None]
     
