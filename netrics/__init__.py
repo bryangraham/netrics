@@ -16,6 +16,7 @@ from ipt.iv import iv
 
 # Networks functions
 from .dyadic_regression import dyadic_regression
+from .bilogit import bilogit
 from .tetrad_logit import tetrad_logit
 from .dyad_jfe_logit import dyad_jfe_logit
 
