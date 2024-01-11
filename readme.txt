@@ -26,3 +26,6 @@ PAPER CITATIONS
 ---------------
 Graham, Bryan S. (2017). "An econometric model of link formation with degree 
 	heterogeneity," Econometrica 85 (4): 1033 - 1063
+
+Graham, Bryan S. (2020). "Sparse network asymptotics for logistic regression under 
+	possible misspecification,” CEMMAP Working Paper CWP51/20 (Revised 2024).

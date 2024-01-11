@@ -110,7 +110,8 @@ def dyadic_regression(Y, R, regmodel='normal', directed=True, nocons=False, sile
     # Get dataset dimensions and agent/dyad indices
     n, K    = np.shape(R)           # Number of directed/undirected dyads (n) and regressors (K)
     i, j    = R.index.levels        # Agent-level indices associated with each dyad
-    agents  = set(i | j)            # Set of all unique agent-level indices
+    #agents  = set(i | j)            # Set of all unique agent-level indices
+    agents  = set(i).union(set(j))  # Set of all unique agent-level indices
     N       = len(agents)           # Number of agents    
     idx, jdx = list(R.index.names)  # Labels for i and j indices (e.g., 'exporter', 'importer')
     

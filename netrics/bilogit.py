@@ -20,7 +20,7 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
     
     """
     AUTHOR: Bryan S. Graham, UC - Berkeley, bgraham@econ.berkeley.edu, September 2022
-            (revised September 2022)
+            (revised September 2023)
     PYTHON 3.6
     
     This function computes bipartite logit regression estimates 
@@ -42,11 +42,8 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
                       'jack-knife', 'dense', 'sparse' are allowable choices (see below)
     
     
-    The three variance-covariance matrices are as described in Graham (2020).
-    'ind' assumes independence across dyads; `DR' allows 
-    for dependence across dyads sharing an indices in common. It corresponds to the 
-    usual Jackknife variance estimate of the leading term in the asymptotic variance 
-    expression. 'DR_bc' is a bias-corrected variance estimate.                     
+    The three variance-covariance matrices are as described in the Appendix of 
+    Graham (2022).      
     
     
     OUTPUTS:
@@ -73,7 +70,7 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
         return [None, None, None]
     
     # Get dataset dimensions and agent/dyad indices
-    NM, K    = np.shape(R)          # Number of dyads (n) and regressors (K)
+    NM, K   = np.shape(R)           # Number of dyads (n) and regressors (K)
     i, j    = R.index.levels        # "customer" and "product" indices associated with each dyad
     N       = len(i)                # Number of customers   
     M       = len(j)                # Number of products  
@@ -139,8 +136,8 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
     # according to specificed method
        
     if cov == 'jack-knife':
-        # Assume independence across dyads
-        vcov_theta_BL = (iGamma @ (Sigma1c/N + Sigma1p/M) @ iGamma)/NM
+        # Normal U-Statistic type estimate
+        vcov_theta_BL = (iGamma @ (Sigma1c/N + Sigma1p/M) @ iGamma)
         
     elif cov == 'dense':
         # Dependence across dyads allowed, only leading variance term retained
@@ -153,8 +150,7 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
             L[L<0] = 0                    # remove negative eigenvalues
             L      = np.diag(L)
             iQ     = np.linalg.inv(Q)
-            vcov_theta_BL = Q @ L @ iQ    # positive definite matrix
-            
+            vcov_theta_BL = Q @ L @ iQ    # positive definite matrix            
     else:
         # Dependence across dyads allowed, both variance terms retained
         vcov_theta_BL = (iGamma @ (Sigma1c/N + Sigma1p/M - Sigma23/NM) @ iGamma)
@@ -178,23 +174,29 @@ def bilogit(Y, R, nocons=False, silent=False, cov='DR_bc'):
         print("- BILOGIT REGRESSION ESTIMATION RESULTS                                                   -")
         print("-------------------------------------------------------------------------------------------")
         print("")
-        print("Number of agents,           N : " + "{:>15,.0f}".format(N))
-        print("Number of dyads,            n : " + "{:>15,.0f}".format(n))
+        print("Number of agents (i),       N : " + "{:>15,.0f}".format(N))
+        print("Number of agents (j),       M : " + "{:>15,.0f}".format(M))
+        print("Number of dyads,           NM : " + "{:>15,.0f}".format(N*M))
         print("")
         print("")
         print("-------------------------------------------------------------------------------------------")
         print_coef(theta_BL, vcov_theta_BL, list(R.columns.values))
-        if cov == 'ind':
+        if cov == 'jack-knife':
             # Assume independence across dyads
-            print("NOTE: Standard errors assume independence across dyads.")
-        elif cov == 'DR':
+            print("NOTE: Standard errors allow for dependence across dyads with agents in common.")
+            print("      (Dense case jack-knife variance estimate). ")
+        elif cov == 'dense':
             # Dependence across dyads allowed, only leading variance term retained
             print("NOTE: Standard errors allow for dependence across dyads with agents in common.")
-            print("      (Jackknife variance estimate). ")
+            print("      (Dense case bias-corrected jack-knife variance estimate). ")
+            if not np.all(L>0):
+                print("      (Eigenvalues thresholded to make variance pos. def.). ")
         else:
             # Dependence across dyads allowed, both variance terms retained
             print("NOTE: Standard errors allow for dependence across dyads with agents in common.")
-            print("      (Bias-corrected variance estimate). ")
+            print("      (Sparse case bias-corrected jack-knife variance estimate). ")
+            if not np.all(L>0):
+                print("      (Eigenvalues thresholded to make variance pos. def.). ")
     
     # Remove constant from W if needed
     if not nocons:
