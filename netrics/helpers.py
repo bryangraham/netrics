@@ -393,7 +393,7 @@ def dyad_jfe_select_matrix(N):
     dyad_list = np.asarray(list(it.combinations(range(0,N), 2)), dtype='int')
     
     # Intitialize sparse matrix and dictionary returnables
-    T = sp.sparse.lil_matrix((n, N), dtype=np.bool)
+    T = sp.sparse.lil_matrix((n, N), dtype=bool)
     dyad_to_agents_dict = {} 
     
     # iterate over all dyads in the network/graph and update returnables
